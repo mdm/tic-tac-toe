@@ -2,18 +2,18 @@ Roadmap
 =======
 
 * Prep
-  * React refresher
-  * Decide on using TypeScript or not
-* Init Git repo
+  * React refresher (done)
+  * Decide on using TypeScript or not (done; use it)
+* Init Git repo (done)
 * Implement auth (backend)
-  * Create Rails 6 app (API mode)
-  * Generate player model
-  * Generate auth controller
-  * Implement login (JWT based)
-  * Implement auth check (with refresh)
-  * Implement logout
+  * Create Rails 6 app (API mode) (done)
+  * Generate player model (done)
+  * Generate auth controller (done)
+  * Implement login (JWT based) (done)
+  * Implement auth check (done)
+  * Implement logout (done)
 * Implement login (frontend)
-  * Create React app (TypeScript?)
+  * Create React app (TypeScript?) (done)
   * Create login form
   * Implement basic routing
   * Implement backend calls
@@ -33,3 +33,4 @@ Roadmap
   * Animations
   * E2E testing
   * Redis or memcached for caching
+  * Refresh tokens for auth
