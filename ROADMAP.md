@@ -14,9 +14,9 @@ Roadmap
   * Implement logout (done)
 * Implement login (frontend)
   * Create React app (TypeScript?) (done)
-  * Create login form
-  * Implement basic routing
-  * Implement backend calls
+  * Create login form (done)
+  * Implement basic routing (done)
+  * Implement backend calls (done)
 * Setup testing (frontend and backend)
 * Implement lobby
   * Use Action Cable to provide list of connected users
@@ -27,6 +27,7 @@ Roadmap
   * Debounce tile clicks
   * Highlight emtpy tile until accepted move is published
 * Nice to have
+  * Redirect to intended target url after login
   * Allow resuming games after navigation
   * Rematch (with forced color change)
   * Docker Compose file / Heroku deployment

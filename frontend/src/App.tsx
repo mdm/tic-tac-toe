@@ -1,25 +1,48 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useContext, useEffect, useState } from "react";
+import { Route, Switch } from "react-router-dom";
+
+import API from "./api";
+import PlayerContext from "./store/PlayerContext";
+import GuardedRoute from "./components/GuardedRoute";
+import Login from "./views/Login";
+import Lobby from "./views/Lobby";
+import Match from "./views/Match";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+  const playerContext = useContext(PlayerContext);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    API.checkAuth()
+      .then((response) => {
+        if (response.status === 200) {
+          playerContext.loginPlayer(response.data.name);
+          setLoading(false);
+        }
+      })
+      .catch((error) => {
+        if (error.response.status === 401) {
+          playerContext.logoutPlayer();          
+          setLoading(false);
+        }
+      });
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  return loading ? null : (
+    <Switch>
+      <GuardedRoute authenticated={playerContext.authenticated} exact path="/">
+        <Lobby />
+      </GuardedRoute>
+      <GuardedRoute
+        authenticated={playerContext.authenticated}
+        path="/match/:id"
+      >
+        <Match />
+      </GuardedRoute>
+      <Route path="/login">
+        <Login />
+      </Route>
+    </Switch>
   );
 }
 
