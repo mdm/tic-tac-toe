@@ -1,8 +1,6 @@
 class AuthController < ApplicationController
   before_action :authenticate, only: [:check]
 
-  protect_from_forgery only: [:check]
-
   JWT_VALID_FOR_SECONDS = 60 * 60
 
   def login # rubocop:disable Metrics/AbcSize
