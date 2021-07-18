@@ -1,16 +1,19 @@
 class MatchesController < ApplicationController
+  before_action :authenticate
+
   def create
-    players = [@player, match_params[:opponent]]
+    opponent = Player.find_by_name(match_params[:opponent])
+    players = [@player, opponent]
     players.shuffle!
-    match = Match.create(noughts: players[0], crosses: player[1], accepted_moves: 0, finished: false)
-    render json: match
+    match = Match.create(noughts: players[0], crosses: players[1], accepted_moves: 0, finished: false)
+    PlayerChannel.broadcast_to opponent, { event: 'challenge', match: match_details(match) }
+    render json: match_details(match), status: :created
   end
 
   def move # rubocop:disable Metrics/AbcSize
     @match = Match.find(move_params[:match])
-    return invalid_move if @player == @match.noughts && @match.accepted_moves.odd?
-    return invalid_move if @player == @match.crosses && @match.accepted_moves.even?
-    return invalid_move unless move_at(move_params[:cell]).nil?
+    return head :forbidden unless @player == @match.noughts || @player == @match.crosses
+    return invalid_move_response unless valid_move?
 
     Move.create(match: @match, number: @match.accepted_moves, cell: move_params[:cell])
 
@@ -19,25 +22,36 @@ class MatchesController < ApplicationController
     @match.save
 
     MoveChannel.broadcast_to @match, { event: 'move', player: @player.name, cell: move_params[:cell] }
-    valid_move
+    valid_move_response
   end
 
   private
 
   def match_params
-    params.require(:opponent)
+    params.permit(:opponent, :match)
   end
 
   def move_params
-    params.require(:match, :cell)
+    params.permit(:match, :cell)
   end
 
-  def valid_move
+  def match_details(match)
+    { id: match.id, noughts: match.noughts.name, crosses: match.crosses.name }
+  end
+
+  def valid_move_response
     render json: { accepted: true, finished: @match.finished }
   end
 
-  def invalid_move
+  def invalid_move_response
     render json: { accepted: false, finished: @match.finished }
+  end
+
+  def valid_move?
+    return false if @player == @match.noughts && @match.accepted_moves.odd?
+    return false if @player == @match.crosses && @match.accepted_moves.even?
+
+    move_at(move_params[:cell]).nil?
   end
 
   def move_at(cell)

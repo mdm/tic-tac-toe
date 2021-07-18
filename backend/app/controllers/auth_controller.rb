@@ -28,7 +28,7 @@ class AuthController < ApplicationController
   private
 
   def player_params
-    params.require(:name, :password)
+    params.permit(:name, :password)
   end
 
   def player_jwt
