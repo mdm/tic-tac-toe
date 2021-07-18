@@ -22,10 +22,24 @@ const logout = () => {
   return client.post("/auth/logout");
 };
 
+const createMatch = (opponent: string) => {
+  return client.post("/matches", {
+    opponent,
+  });
+};
+
+const makeMove = (match: number, cell: number) => {
+  return client.post(`/matches/${match}`, {
+    cell,
+  });
+};
+
 const API = {
   login,
   logout,
   checkAuth,
+  createMatch,
+  makeMove,
 };
 
 export default API;

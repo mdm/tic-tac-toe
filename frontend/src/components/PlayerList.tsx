@@ -9,7 +9,7 @@ const PlayerList: React.FC<{
 }> = ({ players, me, onChallenge }) => {
   return (
     <Card>
-      <Card.Header>Online Players</Card.Header>
+      <Card.Header>Available Players</Card.Header>
       <ListGroup variant="flush">
         {players.map((player) => {
           return (

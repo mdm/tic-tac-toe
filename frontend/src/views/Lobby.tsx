@@ -1,16 +1,25 @@
 import { useContext, useEffect, useState } from "react";
+import { useHistory } from "react-router";
 
-import PlayerContext from "../store/PlayerContext";
+import PlayerContext, { Match } from "../store/PlayerContext";
 import Header from "../components/Header";
 import Wrapper from "../components/Wrapper";
 import PlayerList from "../components/PlayerList";
+import API from "../api";
 
 const Lobby: React.FC = () => {
+  const history = useHistory();
   const playerContext = useContext(PlayerContext);
   const [players, setPlayers] = useState<string[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_subscription, setSubscription] =
+    useState<(ActionCable.Channel & ActionCable.CreateMixin) | undefined>(
+      undefined
+    );
 
   const listHandler = (allPlayers: string[]) => {
     allPlayers.sort();
+    console.log("LIST", allPlayers);
     setPlayers(allPlayers);
   };
 
@@ -32,24 +41,57 @@ const Lobby: React.FC = () => {
     });
   };
 
-  useEffect(() => {
-    playerContext.subscribeChannel("PlayerChannel", {
-      received: (data) => {
-        switch (data.event) {
-          case "list":
-            listHandler(data.players);
-            break;
-          case "join":
-            joinHandler(data.player);
-            break;
-          case "part":
-            partHandler(data.player);
-            break;
-          default:
-            break;
+  const challengeHandler = (match: Match) => {
+    playerContext.setMatch(match);
+    history.push(`/match/${match.id}`);
+  };
+
+  const createMatchHandler = (opponent: string) => {
+    API.createMatch(opponent)
+      .then((response) => {
+        if (response.status === 201) {
+          const id = response.data.id;
+          playerContext.setMatch(response.data);
+          history.push(`/match/${id}`);
         }
-      },
-    });
+      })
+      .catch((error) => {
+        if (error.response && error.response.status === 401) {
+          playerContext.logoutPlayer();
+        }
+      });
+  };
+
+  useEffect(() => {
+    setSubscription(
+      playerContext.subscribeChannel("PlayerChannel", {
+        received: (data) => {
+          switch (data.event) {
+            case "list":
+              listHandler(data.players);
+              break;
+            case "join":
+              joinHandler(data.player);
+              break;
+            case "part":
+              partHandler(data.player);
+              break;
+            case "challenge":
+              challengeHandler(data.match);
+              break;
+            default:
+              break;
+          }
+        },
+      })
+    );
+
+    return () => {
+      setSubscription((prevSubscription) => {
+        prevSubscription?.unsubscribe();
+        return undefined;
+      });
+    };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
@@ -57,7 +99,11 @@ const Lobby: React.FC = () => {
       <Header />
       <Wrapper>
         <h1>Hello, {playerContext.displayName}!</h1>
-        <PlayerList players={players} me={playerContext.displayName} onChallenge={alert}/>
+        <PlayerList
+          players={players}
+          me={playerContext.displayName}
+          onChallenge={createMatchHandler}
+        />
       </Wrapper>
     </div>
   );
