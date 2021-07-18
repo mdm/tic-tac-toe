@@ -1,13 +1,16 @@
 import { useContext, useEffect, useState } from "react";
-import Button from "react-bootstrap/esm/Button";
 
 import PlayerContext from "../store/PlayerContext";
+import Header from "../components/Header";
+import Wrapper from "../components/Wrapper";
+import PlayerList from "../components/PlayerList";
 
 const Lobby: React.FC = () => {
   const playerContext = useContext(PlayerContext);
   const [players, setPlayers] = useState<string[]>([]);
 
   const listHandler = (allPlayers: string[]) => {
+    allPlayers.sort();
     setPlayers(allPlayers);
   };
 
@@ -51,13 +54,11 @@ const Lobby: React.FC = () => {
 
   return (
     <div>
-      <h1>Hello, {playerContext.displayName}!</h1>
-      <Button onClick={playerContext.logoutPlayer}>Logout</Button>
-      <ul>
-        {players.map((player) => {
-          return <li key={player}>{player}</li>;
-        })}
-      </ul>
+      <Header />
+      <Wrapper>
+        <h1>Hello, {playerContext.displayName}!</h1>
+        <PlayerList players={players} me={playerContext.displayName} onChallenge={alert}/>
+      </Wrapper>
     </div>
   );
 };
