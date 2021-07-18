@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  noughts: one
+  crosses: one
+  accepted_moves: 1
+  finished: false
+
+two:
+  noughts: two
+  crosses: two
+  accepted_moves: 1
+  finished: false
