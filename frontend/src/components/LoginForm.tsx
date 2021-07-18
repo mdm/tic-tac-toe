@@ -21,7 +21,8 @@ const LoginForm: React.FC = () => {
     const password = passwordInputRef.current?.value || "";
     API.login(name, password)
       .then((response) => {
-        if (response.status === 204) {
+        if (response.status === 201 || response.status === 204) {
+          console.log("LOGIN", name);
           playerContext.loginPlayer(name);
           history.push("/"); // TODO: is replace better?
         }
@@ -52,7 +53,7 @@ const LoginForm: React.FC = () => {
           ref={passwordInputRef}
         />
         <Form.Control.Feedback type="invalid">
-          Something is not right make sure you entered the right password or
+          Something is not right. Make sure you entered the right password or
           pick a different name.
         </Form.Control.Feedback>
       </Form.Group>

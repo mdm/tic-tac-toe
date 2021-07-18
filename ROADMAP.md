@@ -20,13 +20,14 @@ Roadmap
 * Setup testing (frontend and backend)
 * Implement lobby
   * Use Action Cable to provide list of connected users
-  * Online user can be challeng
+  * Online user can be challenged
   * Challenges can be accepted or denied
 * Implement gameplay
   * Validate moves in backend
   * Debounce tile clicks
   * Highlight emtpy tile until accepted move is published
 * Nice to have
+  * Option to decline challenges
   * Redirect to intended target url after login
   * Allow resuming games after navigation
   * Rematch (with forced color change)
