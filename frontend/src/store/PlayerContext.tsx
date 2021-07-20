@@ -53,7 +53,7 @@ export const PlayerContextProvider: React.FC = ({ children }) => {
     channel: string | ActionCable.ChannelNameWithParams,
     mixin: ActionCable.CreateMixin
   ) => {
-    if (cable) {
+    if (cable && cable.subscriptions) {
       return cable.subscriptions.create(channel, mixin);
     }
   };

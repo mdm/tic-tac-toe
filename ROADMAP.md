@@ -19,21 +19,22 @@ Roadmap
   * Implement backend calls (done)
 * Setup testing (frontend and backend)
 * Implement lobby
-  * Use Action Cable to provide list of connected users
-  * Online user can be challenged
-  * Challenges can be accepted or denied
+  * Use Action Cable to provide list of connected users (done)
+  * Online user can be challenged (done)
 * Implement gameplay
-  * Validate moves in backend
-  * Debounce tile clicks
-  * Highlight emtpy tile until accepted move is published
-* Nice to have
+  * Validate moves in backend (done)
+
+
+* For future consideration
   * More validation in backend
   * Option to decline challenges
   * Redirect to intended target url after login
-  * Allow resuming games after navigation
   * Rematch (with forced color change)
   * Docker Compose file / Heroku deployment
   * Animations
   * E2E testing
-  * Redis or memcached for caching
   * Refresh tokens for auth
+  
+* Known bugs
+  * Unpermitted parameter "match" in backend - probably I'm violating some Rails convention I'm not aware of
+  * Action Cable sometimes does not resubscribe to the "available players" channel when returning to the lobby after a match - this can be worked around by reloading the page

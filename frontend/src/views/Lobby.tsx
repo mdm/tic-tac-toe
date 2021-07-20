@@ -19,12 +19,10 @@ const Lobby: React.FC = () => {
 
   const listHandler = (allPlayers: string[]) => {
     allPlayers.sort();
-    console.log("LIST", allPlayers);
     setPlayers(allPlayers);
   };
 
   const joinHandler = (joiningPlayer: string) => {
-    console.log("JOIN", joiningPlayer);
     setPlayers((prevPlayers) => {
       return prevPlayers
         .filter((player) => player !== joiningPlayer)
@@ -34,7 +32,6 @@ const Lobby: React.FC = () => {
   };
 
   const partHandler = (partingPlayer: string) => {
-    console.log("PART", partingPlayer);
     setPlayers((prevPlayers) => {
       return prevPlayers.filter(
         (player) =>
@@ -63,7 +60,6 @@ const Lobby: React.FC = () => {
   };
 
   useEffect(() => {
-    console.log("SUB");
     setSubscription(
       playerContext.subscribeChannel("PlayerChannel", {
         received: (data) => {
@@ -88,7 +84,6 @@ const Lobby: React.FC = () => {
     );
 
     return () => {
-      console.log("UNSUB");
       setSubscription((prevSubscription) => {
         prevSubscription?.unsubscribe();
         return undefined;

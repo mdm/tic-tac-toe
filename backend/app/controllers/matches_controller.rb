@@ -43,11 +43,7 @@ class MatchesController < ApplicationController
 
   def accept_move
     ActiveRecord::Base.transaction do
-      pp '@1'
-      pp move_params
-      pp '@2'
       Move.create(match_id: @match.id, number: @match.accepted_moves, cell: move_params[:cell])
-      pp '@3'
       @match.reload
 
       @match.accepted_moves += 1
