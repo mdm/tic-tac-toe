@@ -17,7 +17,6 @@ Roadmap
   * Create login form (done)
   * Implement basic routing (done)
   * Implement backend calls (done)
-* Setup testing (frontend and backend)
 * Implement lobby
   * Use Action Cable to provide list of connected users (done)
   * Online user can be challenged (done)
@@ -26,9 +25,10 @@ Roadmap
 
 
 * For future consideration
+  * Add unit tests (most important; omitted for time)
   * More validation in backend
-  * Option to decline challenges
   * Redirect to intended target url after login
+  * Option to decline challenges
   * Rematch (with forced color change)
   * Docker Compose file / Heroku deployment
   * Animations
@@ -37,4 +37,7 @@ Roadmap
   
 * Known bugs
   * Unpermitted parameter "match" in backend - probably I'm violating some Rails convention I'm not aware of
-  * Action Cable sometimes does not resubscribe to the "available players" channel when returning to the lobby after a match - this can be worked around by reloading the page
+  * Action Cable sometimes does not resubscribe to the "available players" channel when returning to the lobby after a match
+    * This can be worked around by reloading the page
+    * A proper fix would probably involve keeping subscriptions alive the entire time and implement refreshes via
+
