@@ -8,7 +8,7 @@ How to run
 
 Backend:
 1. `cd backend`
-2. Place the file `master.key` in this folder
+2. Place the file `master.key` in the config subfolder
 3. `bundle install`
 4. `rails s`
 
