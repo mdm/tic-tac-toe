@@ -4,6 +4,8 @@ class MoveChannel < ApplicationCable::Channel
     match = Match.find(params[:match])
     stream_for match
 
-    broadcast_to player, { event: 'moves', match: match.id, moves: moves.order(:number).map(&:cell) }
+    broadcast_to player,
+                 { event: 'moves', match: match.details, moves: match.moves.order(:number).map(&:cell),
+                   result: match.result }
   end
 end

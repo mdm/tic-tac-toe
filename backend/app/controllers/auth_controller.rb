@@ -18,6 +18,8 @@ class AuthController < ApplicationController
 
   def logout
     reset_session
+    @player.online = false
+    @player.save
   end
 
   def check

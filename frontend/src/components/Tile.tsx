@@ -5,7 +5,7 @@ const Tile: React.FC<{
   onMove: () => void;
 }> = ({ symbol, onMove }) => {
   return (
-    <Cell>
+    <Cell onClick={onMove}>
       {symbol === "X" ? (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -36,6 +36,13 @@ const Tile: React.FC<{
             strokeWidth="15"
           />
         </svg>
+      ) : null}
+      {symbol === "." ? (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="100%"
+          viewBox="0 0 100 100"
+        ></svg>
       ) : null}
     </Cell>
   );

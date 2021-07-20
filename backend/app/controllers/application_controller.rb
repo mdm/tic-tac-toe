@@ -17,6 +17,9 @@ class ApplicationController < ActionController::API
     return head :unauthorized if decoded_token[0]['exp'] < Time.now.to_i
 
     @player = Player.find_by_name(decoded_token[0]['sub'])
+    return head :unauthorized if @player.nil?
+
+    @player
   rescue JWT::DecodeError
     head :unauthorized
   end

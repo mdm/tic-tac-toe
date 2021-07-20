@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router";
 
-import PlayerContext, { Match } from "../store/PlayerContext";
+import PlayerContext from "../store/PlayerContext";
 import Header from "../components/Header";
 import Wrapper from "../components/Wrapper";
 import PlayerList from "../components/PlayerList";
@@ -24,6 +24,7 @@ const Lobby: React.FC = () => {
   };
 
   const joinHandler = (joiningPlayer: string) => {
+    console.log("JOIN", joiningPlayer);
     setPlayers((prevPlayers) => {
       return prevPlayers
         .filter((player) => player !== joiningPlayer)
@@ -33,6 +34,7 @@ const Lobby: React.FC = () => {
   };
 
   const partHandler = (partingPlayer: string) => {
+    console.log("PART", partingPlayer);
     setPlayers((prevPlayers) => {
       return prevPlayers.filter(
         (player) =>
@@ -41,9 +43,8 @@ const Lobby: React.FC = () => {
     });
   };
 
-  const challengeHandler = (match: Match) => {
-    playerContext.setMatch(match);
-    history.push(`/match/${match.id}`);
+  const challengeHandler = (matchId: number) => {
+    history.push(`/match/${matchId}`);
   };
 
   const createMatchHandler = (opponent: string) => {
@@ -51,7 +52,6 @@ const Lobby: React.FC = () => {
       .then((response) => {
         if (response.status === 201) {
           const id = response.data.id;
-          playerContext.setMatch(response.data);
           history.push(`/match/${id}`);
         }
       })
@@ -63,6 +63,7 @@ const Lobby: React.FC = () => {
   };
 
   useEffect(() => {
+    console.log("SUB");
     setSubscription(
       playerContext.subscribeChannel("PlayerChannel", {
         received: (data) => {
@@ -77,7 +78,7 @@ const Lobby: React.FC = () => {
               partHandler(data.player);
               break;
             case "challenge":
-              challengeHandler(data.match);
+              challengeHandler(data.match.id);
               break;
             default:
               break;
@@ -87,6 +88,7 @@ const Lobby: React.FC = () => {
     );
 
     return () => {
+      console.log("UNSUB");
       setSubscription((prevSubscription) => {
         prevSubscription?.unsubscribe();
         return undefined;

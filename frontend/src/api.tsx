@@ -28,8 +28,8 @@ const createMatch = (opponent: string) => {
   });
 };
 
-const makeMove = (match: number, cell: number) => {
-  return client.post(`/matches/${match}`, {
+const makeMove = (matchId: string, cell: number) => {
+  return client.post(`/matches/${matchId}`, {
     cell,
   });
 };

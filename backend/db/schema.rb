@@ -16,7 +16,7 @@ ActiveRecord::Schema.define(version: 2021_07_18_111916) do
     t.integer "noughts_id", null: false
     t.integer "crosses_id", null: false
     t.integer "accepted_moves"
-    t.boolean "finished"
+    t.string "result"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["crosses_id"], name: "index_matches_on_crosses_id"
@@ -35,6 +35,7 @@ ActiveRecord::Schema.define(version: 2021_07_18_111916) do
   create_table "players", force: :cascade do |t|
     t.string "name", null: false
     t.string "password_digest", null: false
+    t.boolean "online", default: false, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["name"], name: "index_players_on_name", unique: true

@@ -22,7 +22,6 @@ const LoginForm: React.FC = () => {
     API.login(name, password)
       .then((response) => {
         if (response.status === 201 || response.status === 204) {
-          console.log("LOGIN", name);
           playerContext.loginPlayer(name);
           history.push("/"); // TODO: is replace better?
         }

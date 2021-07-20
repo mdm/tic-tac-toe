@@ -27,6 +27,7 @@ Roadmap
   * Debounce tile clicks
   * Highlight emtpy tile until accepted move is published
 * Nice to have
+  * More validation in backend
   * Option to decline challenges
   * Redirect to intended target url after login
   * Allow resuming games after navigation

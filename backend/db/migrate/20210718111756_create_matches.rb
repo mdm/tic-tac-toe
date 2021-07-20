@@ -4,7 +4,7 @@ class CreateMatches < ActiveRecord::Migration[6.1]
       t.references :noughts, null: false
       t.references :crosses, null: false
       t.integer :accepted_moves
-      t.boolean :finished
+      t.string :result
 
       t.timestamps
     end

@@ -1,17 +1,17 @@
 class PlayerChannel < ApplicationCable::Channel
-  @@players = Set.new # This works, but I don't consider it production grade code
-
-  def subscribed
+  def subscribed # rubocop:disable Metrics/AbcSize
+    player.online = true
+    player.save
     stream_for player
     stream_from channel_name
-    @@players.add player.name
 
-    broadcast_to player, { event: 'list', players: @@players.to_a }
+    broadcast_to player, { event: 'list', players: Player.online.map(&:name) }
     ActionCable.server.broadcast channel_name, { event: 'join', player: player.name }
   end
 
   def unsubscribed
-    @@players.delete player.name
+    player.online = false
+    player.save
     ActionCable.server.broadcast channel_name, { event: 'part', player: player.name }
   end
 
